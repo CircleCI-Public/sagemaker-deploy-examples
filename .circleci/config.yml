@@ -1,0 +1,20 @@
+version: 2.1
+
+orbs:
+  continuation: circleci/continuation@1.0.0
+
+# This allows you to use CircleCI's dynamic configuration feature
+setup: true
+
+parameters:
+  path-to-run:
+    type: string
+    default: simple-example
+
+# The main purpose of this setup config is to identify which folders contain code changes,
+# letting us choose which model to retrain and redeploy
+workflows:
+  setup:
+    jobs:
+      - continuation/continue:
+          configuration_path: "<< pipeline.parameters.path-to-run >>/.circleci/config.yml"
