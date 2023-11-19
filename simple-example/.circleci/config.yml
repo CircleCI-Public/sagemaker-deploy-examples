@@ -119,17 +119,20 @@ jobs:
       REGION_NAME: << pipeline.parameters.region_name >>
       MODEL_NAME: << pipeline.parameters.model_name >>
       MODEL_DESC: << pipeline.parameters.model_desc >>
-
     steps:
       - checkout
       - run:
+          name: whereami
+          command: pwd && ls -al
+      # `cd simple-example || true;` is a hack to support running config in dynamic or stand alone
+      - run:
           name: install python dependencies
-          command: pip install -r ./kitten_model/requirements.txt --upgrade
+          command: cd simple-example || true; pip install -r ./kitten_model/requirements.txt --upgrade
       - run:
           name: gather data
-          command: python ./kitten_model/gather_data.py
+          command: cd simple-example || true; python ./kitten_model/gather_data.py
       - run:
           name: train and register model
-          command: python ./kitten_model/train_register.py
+          command: cd simple-example || true; python ./kitten_model/train_register.py
 
 
