@@ -1,20 +1,134 @@
 version: 2.1
 
 orbs:
-  continuation: circleci/continuation@1.0.0
+  aws-sagemaker: circleci/aws-sagemaker@0.1.1
 
-# This allows you to use CircleCI's dynamic configuration feature
-setup: true
-
+# To understand context of these, please see their usage down below and the readme.
 parameters:
-  path-to-run:
+  bucket:
     type: string
-    default: simple-example
+    default: circleci-sagemaker-pipeline
+  model_desc:
+    type: string
+    default: "Kitten Classifier allowing us to distinguish between giraffes and kittens."
+  model_name:
+    type: string
+    default: kitten-classifier
+  project_id:
+    type: string
+    default: "e47ee9b0-446f-44cf-bec8-5407ceb06930"
+  region_name:
+    type: string
+    default: us-east-1
 
-# The main purpose of this setup config is to identify which folders contain code changes,
-# letting us choose which model to retrain and redeploy
+main-branch-only: &main-branch-only
+  branches:
+    only:
+      - main
+
+# This workflow demonstrates moving your SageMaker model from dev to production
 workflows:
-  setup:
+  deploy-model-through-to-prod:
     jobs:
-      - continuation/continue:
-          configuration_path: "<< pipeline.parameters.path-to-run >>/.circleci/config.yml"
+      - aws-sagemaker/create_model:
+          # job name that will show in Workflow DAG
+          name: create-model
+          # s3 bucket where asset will be stored
+          bucket: << pipeline.parameters.bucket >>
+          # Name of the model in SageMaker that we will be deploying.
+          model_name: << pipeline.parameters.model_name >>
+          # We use the pipeline.id as the unique identifier for some of the configs we create
+          pipeline_id: << pipeline.id >>
+          # Region where we are deploying to
+          region_name: << pipeline.parameters.region_name >>
+          filters: *main-branch-only
+
+      - aws-sagemaker/deploy_endpoint_configuration: # q: should this be create_endpoint_configuration?
+          name: dev:deploy-model-endpoint-config
+          bucket: << pipeline.parameters.bucket >>
+          # Name of env you are working with. This is just some arbirtrary string thats works for how you like to organize.
+          deploy_environment: dev
+          model_name: << pipeline.parameters.model_name >>
+          pipeline_id: << pipeline.id >>
+          region_name: << pipeline.parameters.region_name >>
+          requires:
+            - create-model
+          filters: *main-branch-only
+
+      - aws-sagemaker/deploy_endpoint:
+          name: dev:deploy-model-to-endpoint
+          bucket: << pipeline.parameters.bucket >>
+          deploy_environment: dev
+          model_name: << pipeline.parameters.model_name >>
+          # Description for the model. q: can we make it optional?
+          model_desc: << pipeline.parameters.model_desc >>
+          pipeline_id: << pipeline.id >>
+          # You can find this value in the Project Settings in CircleCI
+          project_id: << pipeline.parameters.project_id >>
+          region_name: << pipeline.parameters.region_name >>
+          requires:
+            - dev:deploy-model-endpoint-config
+          filters: *main-branch-only
+
+      - promote-model-to-prod-endpoint:
+          type: approval
+          requires:
+            - dev:deploy-model-to-endpoint
+          filters: *main-branch-only
+
+      - aws-sagemaker/deploy_endpoint_configuration:
+          name: prod:deploy-model-endpoint-config
+          bucket: << pipeline.parameters.bucket >>
+          deploy_environment: prod
+          model_name: << pipeline.parameters.model_name >>
+          pipeline_id: << pipeline.id >>
+          region_name: << pipeline.parameters.region_name >>
+          requires:
+            - promote-model-to-prod-endpoint
+          filters: *main-branch-only
+
+      - aws-sagemaker/deploy_endpoint:
+          name: prod:deploy-model-to-endpoint
+          bucket: << pipeline.parameters.bucket >>
+          deploy_environment: prod
+          model_name: << pipeline.parameters.model_name >>
+          model_desc: << pipeline.parameters.model_desc >>
+          pipeline_id: << pipeline.id >>
+          project_id: << pipeline.parameters.project_id >>
+          region_name: << pipeline.parameters.region_name >>
+          requires:
+            - prod:deploy-model-endpoint-config
+          filters: *main-branch-only
+
+  # For model-train work. if you won't need to train a model to use the demo, go ahead and delete it
+  model-train:
+    jobs:
+      - kitten-model-train:
+          filters:
+            branches:
+              only:
+                - model-train
+
+# For model-train work. if you won't need to train a model to use the demo, go ahead and delete it
+jobs:
+  kitten-model-train:
+    docker:
+      - image: python:3.11
+    environment:
+      BUCKET_NAME: << pipeline.parameters.bucket >>
+      REGION_NAME: << pipeline.parameters.region_name >>
+      MODEL_NAME: << pipeline.parameters.model_name >>
+      MODEL_DESC: << pipeline.parameters.model_desc >>
+    steps:
+      - checkout
+      - run:
+          name: install python dependencies
+          command: pip install -r ./kitten_model/requirements.txt --upgrade
+      - run:
+          name: gather data
+          command: python ./kitten_model/gather_data.py
+      - run:
+          name: train and register model
+          command: python ./kitten_model/train_register.py
+
+

@@ -6,4 +6,4 @@ Any subsequent runs of this workflow will create a new version of the model. You
 
 Thanks to Timothy Cheung who's post I cribbed this from: [https://circleci.com/blog/machine-learning-ci-cd-with-aws-sagemaker/](https://circleci.com/blog/machine-learning-ci-cd-with-aws-sagemaker/)
 
-This assumes you have setup the Environment Variable `SAGEMAKER_EXECUTION_ROLE_ARN` as descibed in the simple-example README.md.
+This assumes you have setup the Environment Variable `SAGEMAKER_EXECUTION_ROLE_ARN` as descibed in the README.md in the root of this project.
