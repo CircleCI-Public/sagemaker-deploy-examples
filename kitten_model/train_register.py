@@ -62,13 +62,13 @@ xgb_estimator = Estimator(
     role=role_arn,
     hyperparameters={
         "objective": "reg:linear",
-        "max_depth": 5,
+        "max_depth": 1,
         "eta": 0.2,
         "gamma": 4,
         "min_child_weight": 6,
         "subsample": 0.7,
         "verbosity": 2,
-        "num_round": 100,
+        "num_round": 1,
     },
 )
 
