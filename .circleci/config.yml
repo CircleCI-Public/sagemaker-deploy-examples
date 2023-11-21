@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-sagemaker: circleci/aws-sagemaker@0.1.1
+  aws-sagemaker: stiyyagura0901/sagemaker-test@0.0.6
 
 # To understand context of these, please see their usage down below and the readme.
 parameters:
