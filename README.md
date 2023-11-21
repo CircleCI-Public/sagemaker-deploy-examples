@@ -15,9 +15,11 @@ The Amazon SageMaker Orb uses OIDC. You need to setup an IAM > Identity Provider
 
 #### Role
 
-You will need an IAM > Role with the proper permissions for the following SageMaker actions.
+You will need an IAM > Role with the proper permissions:
 
-[TODO Show proper permissions]
+
+
+
 
 You will then need to setup the Trust relationship between the Role and the CircleCI OIDC Provider. Here is an example Policy (Note you must replace the placeholders with your proper info):
 
