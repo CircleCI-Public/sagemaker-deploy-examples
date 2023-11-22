@@ -54,6 +54,7 @@ Update the S3 bucket information to match your setup.
                 "sagemaker:CreateEndpointConfig",
                 "sagemaker:CreateModel",
                 "sagemaker:DescribeEndpoint",
+	 	"sagemaker:DescribeEndpointConfig",
                 "sagemaker:ListEndpoints",
                 "sagemaker:ListModelPackages",
                 "sagemaker:UpdateEndpoint",
