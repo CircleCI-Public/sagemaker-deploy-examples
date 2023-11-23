@@ -104,6 +104,7 @@ Update the S3 bucket information to match your setup.
     ]
 }
 ```
+
 Then setup the Trust relationship between the Role and the CircleCI OIDC Provider. Here is an example Policy. **Note**: you must replace the placeholders `<CIRCLECI-ORG-ID>` and `<CIRCLECI-PROJECT-ID>` with your proper info.
 
 ```json
