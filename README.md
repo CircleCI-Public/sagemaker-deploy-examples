@@ -161,5 +161,5 @@ For full range of options, consult the circleci/aws-sagemaker orb [documentation
 
 ## Support
 
-Stuck? Need help? Visit our [forums](https://discuss.circleci.com/) or come visit on [Discord](https://discord.com/invite/UWsWB44zYj).
+Stuck? Need help? Visit our [forums](https://discuss.circleci.com/), contact us directly at [sagemaker-integration-feedback@circleci.com](mailto:sagemaker-integration-feedback@circleci.com), or come visit on [Discord](https://discord.com/invite/UWsWB44zYj).
 
