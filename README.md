@@ -153,9 +153,9 @@ There are some required Environment Variables for the orb to function. Please co
 
 `model_name` - The name of the model in SageMaker that we will be deploying.
 
-`pipeline_id` - The pipeline.id is ued as a unique identifier for some of the configurations we create. Format: << pipeline.id >>
+`circle_pipeline_id` - The pipeline.id is ued as a unique identifier for some of the configurations we create. Format: << pipeline.id >>
 
-`project_id` - Found in the Project Settings in CircleCI. Used for specifying the project that triggered this deployment.
+`circle_project_id` - Found in the Project Settings in CircleCI. Used for specifying the project that triggered this deployment.
 
 `region_name` - The aws region where the deployment is to happen. eg: `us-east-1`
 
