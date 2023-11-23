@@ -50,7 +50,7 @@ workflows:
           deploy_environment: dev
           model_name: << pipeline.parameters.model_name >>
           circle_pipeline_id: << pipeline.id >>
-          circle_project_id: << pipeline.parameters.project_id >>
+          circle_project_id: << pipeline.parameters.circle_project_id >>
           region_name: << pipeline.parameters.region_name >>
           requires:
             - create-model
@@ -65,7 +65,7 @@ workflows:
           model_desc: << pipeline.parameters.model_desc >>
           circle_pipeline_id: << pipeline.id >>
           # You can find this value in the Project Settings in CircleCI
-          circle_project_id: << pipeline.parameters.project_id >>
+          circle_project_id: << pipeline.parameters.circle_project_id >>
           region_name: << pipeline.parameters.region_name >>
           requires:
             - dev:create-model-endpoint-config
@@ -83,7 +83,7 @@ workflows:
           deploy_environment: prod
           model_name: << pipeline.parameters.model_name >>
           circle_pipeline_id: << pipeline.id >>
-          circle_project_id: << pipeline.parameters.project_id >>
+          circle_project_id: << pipeline.parameters.circle_project_id >>
           region_name: << pipeline.parameters.region_name >>
           requires:
             - promote-model-to-prod-endpoint
@@ -96,7 +96,7 @@ workflows:
           model_name: << pipeline.parameters.model_name >>
           model_desc: << pipeline.parameters.model_desc >>
           circle_pipeline_id: << pipeline.id >>
-          circle_project_id: << pipeline.parameters.project_id >>
+          circle_project_id: << pipeline.parameters.circle_project_id >>
           region_name: << pipeline.parameters.region_name >>
           requires:
             - prod:create-model-endpoint-config
