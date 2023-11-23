@@ -38,7 +38,7 @@ workflows:
           # Name of the model in SageMaker that we will be deploying.
           model_name: << pipeline.parameters.model_name >>
           # We use the pipeline.id as the unique identifier for some of the configs we create
-          pipeline_id: << pipeline.id >>
+          circle_pipeline_id: << pipeline.id >>
           # Region where we are deploying to
           region_name: << pipeline.parameters.region_name >>
           filters: *main-branch-only
@@ -49,7 +49,8 @@ workflows:
           # Name of env you are working with. This is just some arbirtrary string thats works for how you like to organize.
           deploy_environment: dev
           model_name: << pipeline.parameters.model_name >>
-          pipeline_id: << pipeline.id >>
+          circle_pipeline_id: << pipeline.id >>
+          circle_project_id: << pipeline.parameters.project_id >>
           region_name: << pipeline.parameters.region_name >>
           requires:
             - create-model
@@ -62,9 +63,9 @@ workflows:
           model_name: << pipeline.parameters.model_name >>
           # Description for the model. q: can we make it optional?
           model_desc: << pipeline.parameters.model_desc >>
-          pipeline_id: << pipeline.id >>
+          circle_pipeline_id: << pipeline.id >>
           # You can find this value in the Project Settings in CircleCI
-          project_id: << pipeline.parameters.project_id >>
+          circle_project_id: << pipeline.parameters.project_id >>
           region_name: << pipeline.parameters.region_name >>
           requires:
             - dev:create-model-endpoint-config
@@ -81,7 +82,8 @@ workflows:
           bucket: << pipeline.parameters.bucket >>
           deploy_environment: prod
           model_name: << pipeline.parameters.model_name >>
-          pipeline_id: << pipeline.id >>
+          circle_pipeline_id: << pipeline.id >>
+          circle_project_id: << pipeline.parameters.project_id >>
           region_name: << pipeline.parameters.region_name >>
           requires:
             - promote-model-to-prod-endpoint
@@ -93,8 +95,8 @@ workflows:
           deploy_environment: prod
           model_name: << pipeline.parameters.model_name >>
           model_desc: << pipeline.parameters.model_desc >>
-          pipeline_id: << pipeline.id >>
-          project_id: << pipeline.parameters.project_id >>
+          circle_pipeline_id: << pipeline.id >>
+          circle_project_id: << pipeline.parameters.project_id >>
           region_name: << pipeline.parameters.region_name >>
           requires:
             - prod:create-model-endpoint-config
