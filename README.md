@@ -137,13 +137,13 @@ Then setup the Trust relationship between the Role and the CircleCI OIDC Provide
 }
 ```
 
-### Required Environment Variables
+### Environment Variables
 
-There are some required Environment Variables for the orb to function. Please configure these at either the Project level or using Org Contexts. [Guide on setting Environment Variables in CircleCI](https://circleci.com/docs/set-environment-variable/).
+There are some Environment Variables for the orb to function. Please configure these at either the Project level or using Org Contexts. [Guide on setting Environment Variables in CircleCI](https://circleci.com/docs/set-environment-variable/).
 
 `SAGEMAKER_EXECUTION_ROLE_ARN` (required): This is the role you have configured with the necessary SageMaker permissions, and has the OIDC Trust relationship setup.
 
-`CCI_RELEASE_INTEGRATION_TOKEN` (optional): The Orb also allows integration with [CircleCI Releases](https://app.circleci.com/releases). This will give you visibility into the Endpoint Configuration Updates, and what is currently active. To make a Release Integration Token please see our [Onboarding Guide](https://circleci.com/docs/release/set-up-a-release-environment/). [TODO Updated guide that mentions making the SageMaker Release Integration]
+`CCI_RELEASE_INTEGRATION_TOKEN` (optional): The [CircleCI Releases](https://app.circleci.com/releases) page offers you a single pane of glass to monitor all your deployments across environments. You can view deployment progress in real time, see what versions are currently deployed, and navigate easily to the SageMaker console. To make a Release Integration Token please see the section [Setting up a Release Integration Token](#setting-up-a-release-integration-token).
 
 ## Orb Parameters
 
@@ -162,6 +162,27 @@ There are some required Environment Variables for the orb to function. Please co
 `region_name` - The aws region where the deployment is to happen. eg: `us-east-1`
 
 For full range of options, consult the circleci/aws-sagemaker orb [documentation](https://circleci.com/developer/orbs/orb/circleci/aws-sagemaker#jobs).
+
+## Setting up a Release Integration Token
+
+First you'll want to set up a Release Integration token, so you can leverage the CircleCI UI to monitor your releases. (Please note that you must be an org admin to do this). Navigate to the **Releases** section. Select **Add Release Environment**.
+
+![Blank Releases](https://images.ctfassets.net/il1yandlcjgk/4zP2grQuNff9Zgoj35VnPN/dc6254fe184bf817ca53b4d60433e74e/blank-releases.png)
+
+Select `Amazon SageMaker`, add a Name and Create Environment.
+
+![Create new environment](https://images.ctfassets.net/il1yandlcjgk/36jJ5EjIMpEJjq2EaRZlJd/2df4856a7c810f4f9ac8e4e0a0068462/modal-create-new-environment.png)
+
+Select your Environment:
+
+![Release environment](https://images.ctfassets.net/il1yandlcjgk/1DwzNcayuWUfRLTnbq9u2L/2fe393977cc4f0bff8a23c5fddce14dd/release-env.png)
+
+And click on **Create New Token**.
+
+![Create new token](https://images.ctfassets.net/il1yandlcjgk/4QF3GoDCjIOVgAiUnOe8A5/b88084517074af9f6116723704fe8891/release-create-key.png)
+
+Make sure to save this token for later - we'll pop it into an environment variable.
+
 
 ## Support
 
