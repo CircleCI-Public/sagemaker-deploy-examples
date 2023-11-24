@@ -214,7 +214,7 @@ Every time you run this workflow, it will create a new model version.
 
 Let's break down the `deploy-model-through-to-prod` workflow. Our first job is:
 
-```
+```yml
 - aws-sagemaker/create_model:
     # job name that will show in Workflow DAG
     name: create-model
@@ -223,7 +223,7 @@ Let's break down the `deploy-model-through-to-prod` workflow. Our first job is:
     # Name of the model in SageMaker that we will be deploying.
     model_name: << pipeline.parameters.model_name >>
     # We use the pipeline.id as the unique identifier for some of the configs we create
-    pipeline_id: << pipeline.id >>
+    circle_pipeline_id: << pipeline.id >>
     # Region where we are deploying to
     region_name: << pipeline.parameters.region_name >>
     filters: *main-branch-only
@@ -248,7 +248,8 @@ Next, we have to create the endpoint configuration. Lucky us! We have a command 
     bucket: << pipeline.parameters.bucket >>
     deploy_environment: dev
     model_name: << pipeline.parameters.model_name >>
-    pipeline_id: << pipeline.id >>
+    circle_pipeline_id: << pipeline.id >>
+    circle_project_id: << pipeline.parameters.project_id >>
     region_name: << pipeline.parameters.region_name >>
     requires:
         - create-model
