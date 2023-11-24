@@ -1,3 +1,5 @@
+![Model deployment orchestration](https://images.ctfassets.net/il1yandlcjgk/5xnNL9sZ3jQr9F6GtvjywP/66e7b94c4b960b3d3ba73ddf2b94943b/Sagemaker-circleci-repo-banner.png)
+
 # Using AWS SageMaker Orb To Orchestrate Model Deployment Across Environments
 
 ## Pre-reqs
@@ -15,11 +17,11 @@ Skip this section if you already have this setup.
 
 First get your CircleCI Organization ID. Go to your Organization Settings in CCI and copy your Organization ID.
 
-![Organization Settings page in CircleCI](readme-images/IAM-OIDC-PROVIDER/OIDC-CCI-GET-ORG-ID.png)
+![Organization Settings page in CircleCI](https://images.ctfassets.net/il1yandlcjgk/1VVWYWy9vyFRStkwnXOo4m/b17e167fa649c9151fc494cc9be3223e/OIDC-CCI-GET-ORG-ID.png)
 
 Now go to your AWS Management Console. Go to IAM > Access management > Identity providers. Select Add Provider.
 
-![Identity providers management panel](readme-images/IAM-OIDC-PROVIDER/OIDC-IDENTITY-PROVIDERS.png)
+![Identity providers management panel](https://images.ctfassets.net/il1yandlcjgk/3vtHDfDCVb0J1mdNsIIh6y/d4e2f44f39ebff2cd0d0077428bec276/OIDC-IDENTITY-PROVIDERS.png)
 
 Enter your Provider URL. Then click Thumbprint
 
@@ -27,7 +29,7 @@ Enter your Provider URL. Then click Thumbprint
 
 **Audience**: Enter your organization ID
 
-![Add an identity provider screen](readme-images/IAM-OIDC-PROVIDER/OIDC-ADD-IDENTITY-PROVIDER.png)
+![Add an identity provider screen](https://images.ctfassets.net/il1yandlcjgk/670HDmxgHiLf9US5PVA4bU/28a5088493d1e400688ead79606215d4/OIDC-ADD-IDENTITY-PROVIDER.png)
 
 Click `Get Thumbprint` then `Add Provider`
 
