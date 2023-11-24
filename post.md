@@ -7,15 +7,14 @@ Hi! This tutorial covers:
 * Environment Variables
 * Models
 * Deploying model to SageMaker using the Orb
+* Checking in on your model Release
 * Conclusion
 
-The focus of this article is to illustrate how to use the [AWS SageMaker Orb](https://circleci.com/developer/orbs/orb/circleci/aws-sagemaker) to orchestrate model deployment to endpoints across your environments. The example project repository allows you to train a new model package version and then deploy it across multiple environments.
-
-You can find the code for the tutorial in [this](https://github.com/CircleCI-Public/sagemaker-deploy-examples) Github repository.
+This tutorial guides you on how to use the [AWS SageMaker Orb](https://circleci.com/developer/orbs/orb/circleci/aws-sagemaker) to orchestrate model deployment to endpoints across different environments. It also shows how to use the CircleCI platform to monitor and manage promotions and rollbacks. The [example project](https://github.com/CircleCI-Public/sagemaker-deploy-examples) repository allows you to train a new model package version and then deploy it across multiple environments.
 
 ## Setting up a Release Integration Token
 
-Navigate to the **Releases** section. Select **Add Release Environment**.
+First you'll want to setup a Release Integration token, so you can leverage the CircleCI UI to monitor your releases. (Please note that you must be an org admin to do this). Navigate to the **Releases** section. Select **Add Release Environment**.
 
 ![Blank Releases](images/blank-releases.png)
 
@@ -176,13 +175,13 @@ Go to your project’s settings, click Environment Variables, then click the Add
 
 ![Env var](images/env-vars.png)
 
-`SAGEMAKER_EXECUTION_ROLE_ARN` This is the role you have configured with the necessary SageMaker permissions, and has the OIDC Trust relationship setup.
+`CCI_RELEASE_INTEGRATION_TOKEN`: the Orb also works with [CircleCI Releases](https://app.circleci.com/releases). This will give you visibility into the Endpoint Configuration Updates, and what is currently active.
 
-`CCI_RELEASE_INTEGRATION_TOKEN` The Orb also works with [CircleCI Releases](https://app.circleci.com/releases). This will give you visibility into the Endpoint Configuration Updates, and what is currently active.
+`SAGEMAKER_EXECUTION_ROLE_ARN`: this is the role you have configured with the necessary SageMaker permissions, and has the OIDC Trust relationship setup.
 
 ## Setting up our config.yml
 
-Now we [go look](https://github.com/CircleCI-Public/sagemaker-deploy-examples/blob/7db4387cbd72a5fa1b50592c744389054ab2def0/.circleci/config.yml#L7) at our `.circleci/config.yml` and set some paramters. You will update the defaults for each parameter.
+Now we [go look](https://github.com/CircleCI-Public/sagemaker-deploy-examples/blob/7db4387cbd72a5fa1b50592c744389054ab2def0/.circleci/config.yml#L7) at our `.circleci/config.yml` and set some parameters. You will update the defaults for each parameter.
 
 ```yml
 parameters:
@@ -205,9 +204,9 @@ parameters:
 
 ## Models
 
-For this tutorial, we’ve taken a model commonly found in AWS documentation, Abalone, and rename it.
+For this tutorial, we’ve taken a model commonly found in AWS documentation, Abalone, and renamed it.
 
-You too can have this model! Assuming you using our [example repo](https://github.com/CircleCI-Public/sagemaker-deploy-examples), we have a workflow configured to run on the branch `model-train`. So create that branch, push it up to git, and this workflow will create a new model package version in the model registry. If the model package doesn't already exist, it will create it.
+You too can have this model! Assuming you are using our [example repo](https://github.com/CircleCI-Public/sagemaker-deploy-examples), we have a workflow configured to run on the branch `model-train`. So create that branch, push it up to git, and this workflow will create a new model package version in the model registry. If the model package doesn't already exist, it will create it.
 
 Every time you run this workflow, it will create a new model version.
 
@@ -230,16 +229,16 @@ Let's break down the `deploy-model-through-to-prod` workflow. Our first job is:
     filters: *main-branch-only
 ```
 
-This step goes and creates a model from your latest Model Package in the registry. This will be what we then delpoy to the inference endpoints.
+This step creates a model from your latest Model Package in the registry. This will be what we then deploy to the inference endpoints.
 
-Some things to notice: Aside from the `name` and the `filters` all the other parameters are passed in from our pipeline parameters.
+Some things to notice: Aside from `name` and `filters`, all other parameters are passed in from our pipeline parameters.
 
 ![Alt text](images/dag-pt1.png)
 
 `name` controls the name of this job on the DAG.
 `filters` allows you to control what branch the job runs on.
 
-In general, `create-model` just needs to be called the one time at the beginning of your workflow.
+In general, `create-model` just needs to be called one time at the beginning of your workflow.
 
 Next, we have to create the endpoint configuration. Lucky us! We have a command for that too!
 
@@ -256,7 +255,7 @@ Next, we have to create the endpoint configuration. Lucky us! We have a command 
     filters: *main-branch-only
 ```
 
-Aha! A new parameter enters the battle - `deploy_environment`. This is basically an arbitrary string you can use to bucket your model releases into. eg: dev, staging, testing, prod. All valid. In our example config, you can see we are only using 2 - dev & prod.
+Aha! A new parameter enters the battle - `deploy_environment`. This is basically an arbitrary string you can use to bucket your model releases into, eg: dev, staging, testing, prod. In our example config, you can see we are only using 2 - dev & prod.
 
 Last but not least, we need to push out this updated configuration.
 
@@ -277,11 +276,7 @@ Last but not least, we need to push out this updated configuration.
         filters: *main-branch-only
 ```
 
-No surprises here, we have a `aws-sagemaker/deploy_endpoint` job in the orb. The only thing to set here is also the `deploy_environment` so we know what endpoint_configuration to use. This will deploy your endpoint configuration. You can go keep an eye on it in the Releases to see how its going.
-
-![Releases](images/releases.png)
-
-![Witing for availability](images/wait-for-availability.png)
+No surprises here, we have a `aws-sagemaker/deploy_endpoint` job in the orb. The only thing to set here is also the `deploy_environment` so we know what `endpoint_configuration` to use. This will deploy your endpoint configuration.
 
 We then throw in an approval job, which will stop our workflow from deploying to production, without a human approving it.
 
@@ -293,9 +288,23 @@ We then throw in an approval job, which will stop our workflow from deploying to
     filters: *main-branch-only
 ```
 
+![Paused Workflow](images/job-approval-rating.png)
+
 At which point, we then repeat the above steps of `aws-sagemaker/create_endpoint_configuration` and `aws-sagemaker/deploy_endpoint` but with `deploy_environment` set to `prod`.
 
+## Checking in on your model Release
 
+Navigate back to the **Releases** section. You should now see something along the lines of the below images.
+
+![Releases](images/releases.png)
+
+Click on the **Component name**, and it will fetch some details about the Component.
+
+![Component view](images/component-view.png)
+
+If you select the **Verion** you will see the details page about this version being released.
+
+![Waiting for availability](images/wait-for-availability.png)
 
 ## Support
 
