@@ -1,29 +1,37 @@
-This tutorial covers:
+# Using AWS SageMaker Orb To Orchestrate Model Deployment Across Environments
+
+Hi! This tutorial covers:
 
 * Setting up a Release Integration Token
-* Setting up a SageMaker Access
+* Setting up SageMaker Access for your workflow
 * Environment Variables
 * Models
-* Deploying using the Orb
+* Deploying model to SageMaker using the Orb
 * Conclusion
 
-There are many benefits of incorporating CI/CD into your ML pipeline, such as automating the deployment of ML models to production at scale.
+The focus of this article is to illustrate how to use the [AWS SageMaker Orb](https://circleci.com/developer/orbs/orb/circleci/aws-sagemaker) to orchestrate model deployment to endpoints across your environments. The example project repository allows you to train a new model package version and then deploy it across multiple environments.
 
-The focus of this article is to illustrate how to use the [AWS SageMaker Orb](https://circleci.com/developer/orbs/orb/circleci/aws-sagemaker) to orchestrate model deployment across environments. The example project repository allows you to train a new model package version and then deploy it across multiple environments.
-
-You can find the code for this tutorial in [this](https://github.com/CircleCI-Public/sagemaker-deploy-examples) Github repository.
+You can find the code for the tutorial in [this](https://github.com/CircleCI-Public/sagemaker-deploy-examples) Github repository.
 
 ## Setting up a Release Integration Token
 
-navigate to the Releases section. Select Add Release Environment.
+Navigate to the **Releases** section. Select **Add Release Environment**.
 
-![Image of dropdown ](images/placeholder.jpg)
+![Blank Releases](images/blank-releases.png)
 
-Select `Amazon SageMaker`, add a Name and create enviroment.
+Select `Amazon SageMaker`, add a Name and Create Enviroment.
 
 ![Alt text](images/modal-create-new-environment.png)
 
-Select your Environment, and click on Create New Token. Make sure to copy it down for later - we'll pop it into an environment variable.
+Select your Environment:
+
+![Alt text](images/release-env.png)
+
+And click on **Create New Token**.
+
+![Alt text](images/release-create-key.png)
+
+Make sure to save your kry for later - we'll pop it into an environment variable.
 
 ## Setting up Amazon SageMaker access
 
