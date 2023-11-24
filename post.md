@@ -10,15 +10,15 @@ Hi! This tutorial covers:
 * Checking in on your model Release
 * Conclusion
 
-This tutorial guides you on how to use the [AWS SageMaker Orb](https://circleci.com/developer/orbs/orb/circleci/aws-sagemaker) to orchestrate model deployment to endpoints across different environments. It also shows how to use the CircleCI platform to monitor and manage promotions and rollbacks. The [example project](https://github.com/CircleCI-Public/sagemaker-deploy-examples) repository allows you to train a new model package version and then deploy it across multiple environments.
+This tutorial guides you on how to use the [Amazon SageMaker Orb](https://circleci.com/developer/orbs/orb/circleci/aws-sagemaker) to orchestrate model deployment to endpoints across different environments. It also shows how to use the CircleCI platform to monitor and manage promotions and rollbacks. The [example project](https://github.com/CircleCI-Public/sagemaker-deploy-examples) repository allows you to train a new model package version and then deploy it across multiple environments.
 
 ## Setting up a Release Integration Token
 
-First you'll want to setup a Release Integration token, so you can leverage the CircleCI UI to monitor your releases. (Please note that you must be an org admin to do this). Navigate to the **Releases** section. Select **Add Release Environment**.
+First you'll want to set up a Release Integration token, so you can leverage the CircleCI UI to monitor your releases. (Please note that you must be an org admin to do this). Navigate to the **Releases** section. Select **Add Release Environment**.
 
 ![Blank Releases](images/blank-releases.png)
 
-Select `Amazon SageMaker`, add a Name and Create Enviroment.
+Select `Amazon SageMaker`, add a Name and Create Environment.
 
 ![Alt text](images/modal-create-new-environment.png)
 
@@ -30,7 +30,7 @@ And click on **Create New Token**.
 
 ![Alt text](images/release-create-key.png)
 
-Make sure to save your kry for later - we'll pop it into an environment variable.
+Make sure to save this token for later - we'll pop it into an environment variable.
 
 ## Setting up Amazon SageMaker access
 
@@ -206,7 +206,9 @@ parameters:
 
 For this tutorial, we’ve taken a model commonly found in AWS documentation, Abalone, and renamed it.
 
-You too can have this model! Assuming you are using our [example repo](https://github.com/CircleCI-Public/sagemaker-deploy-examples), we have a workflow configured to run on the branch `model-train`. So create that branch, push it up to git, and this workflow will create a new model package version in the model registry. If the model package doesn't already exist, it will create it.
+If you already have your own model, feel free to adapt the configuration file to use that one instead. Update the `model_name` parameter and you should be good to go.
+
+BUT! If you don't have your own model, you too can have this model! Assuming you are using our [example repo](https://github.com/CircleCI-Public/sagemaker-deploy-examples), we have a workflow configured to run on the branch `model-train`. So checkout that branch, push it up to git, and this workflow will make a new model package version in the model registry. If the model package doesn't already exist, it will create it.
 
 Every time you run this workflow, it will create a new model version.
 
@@ -295,17 +297,27 @@ At which point, we then repeat the above steps of `aws-sagemaker/create_endpoint
 
 ## Checking in on your model Release
 
-Navigate back to the **Releases** section. You should now see something along the lines of the below images.
+The CircleCI Releases page offers you a single pane of glass to monitor all your deployments across environments. You can view deployment progress in real time, see what versions are currently deployed, and navigate easily to the SageMaker console.
+If you navigate to the **Releases** section, you should now see something along the lines of the below images.
 
 ![Releases](images/releases.png)
 
-Click on the **Component name**, and it will fetch some details about the Component.
+Click on the **Component name**, and it will fetch some details about the Component, including the number of instances deployed. From this interface, you can easily navigate to SageMaker for more live information on your endpoint
 
 ![Component view](images/component-view.png)
 
-If you select the **Verion** you will see the details page about this version being released.
+If you select the **Version** you will see the details page about this version being released.
+
+Clicking on the specific versions lets you monitor in real time the release progress.
 
 ![Waiting for availability](images/wait-for-availability.png)
+
+> ## COMING SOON
+
+> One-click rollback from the CircleCI platform is going to become available very soon.
+![Rollback visual](images/rollback-example.png)
+This feature will let you revert to a previous version of your model simply by clicking on a button in the Releases page.
+Send us a note to [sagemaker-integration-feedback@circleci.com](mailto:sagemaker-integration-feedback@circleci.com).com if you’re interested in this feature and would like to be part of the beta release.
 
 ## Support
 
