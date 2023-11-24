@@ -312,12 +312,13 @@ Clicking on the specific versions lets you monitor in real time the release prog
 
 ![Waiting for availability](images/wait-for-availability.png)
 
-> ## COMING SOON
+> ## COMING SOON (JACOB: THIS IS MEANT TO BE A CALL TO ACTION - what are our options)
 
 > One-click rollback from the CircleCI platform is going to become available very soon.
 ![Rollback visual](images/rollback-example.png)
 This feature will let you revert to a previous version of your model simply by clicking on a button in the Releases page.
-Send us a note to [sagemaker-integration-feedback@circleci.com](mailto:sagemaker-integration-feedback@circleci.com).com if you’re interested in this feature and would like to be part of the beta release.
+
+> Send us a note to [sagemaker-integration-feedback@circleci.com](mailto:sagemaker-integration-feedback@circleci.com).com if you’re interested in this feature and would like to be part of the beta release.
 
 ## Support
 
