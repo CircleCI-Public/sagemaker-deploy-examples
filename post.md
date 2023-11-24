@@ -181,7 +181,7 @@ Go to your project’s settings, click Environment Variables, then click the Add
 
 ## Setting up our config.yml
 
-Now we [go look](https://github.com/CircleCI-Public/sagemaker-deploy-examples/blob/7db4387cbd72a5fa1b50592c744389054ab2def0/.circleci/config.yml#L7) at our `.circleci/config.yml` and set some parameters. You will update the defaults for each parameter.
+Now we [go look](https://github.com/CircleCI-Public/sagemaker-deploy-examples/blob/e7ade1ad821f2b377fe45eab9b5954ad29e90d2e/.circleci/config.yml) at our `.circleci/config.yml` and set some parameters. You will update the defaults for each parameter.
 
 ```yml
 parameters:
