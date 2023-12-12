@@ -1,4 +1,4 @@
-![Model deployment orchestration](https://images.ctfassets.net/il1yandlcjgk/5xnNL9sZ3jQr9F6GtvjywP/66e7b94c4b960b3d3ba73ddf2b94943b/Sagemaker-circleci-repo-banner.png)
+![Model deployment orchestration](https://images.ctfassets.net/il1yandlcjgk/1N07sOANE6m827sHSqpXcW/7cc60308637740b701ddf9885248721e/Final_-_Banner.png)
 
 # Using AWS SageMaker Orb To Orchestrate Model Deployment Across Environments
 
