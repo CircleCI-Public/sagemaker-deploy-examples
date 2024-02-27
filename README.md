@@ -53,6 +53,7 @@ Update the S3 bucket information to match your setup.
             "Effect": "Allow",
             "Action": [
                 "sagemaker:AddTags",
+                "sagemaker:CreateEndpoint",
                 "sagemaker:CreateEndpointConfig",
                 "sagemaker:CreateModel",
                 "sagemaker:DescribeEndpoint",
@@ -73,7 +74,7 @@ Update the S3 bucket information to match your setup.
                 "s3:ListBucket"
             ],
             "Resource": [
-                "arn:aws:s3:::circleci-sagemaker-pipeline/*"
+                "arn:aws:s3:::<S3-BUCKET-FOR-SAGEMAKER-PIPELINE>/*"
             ]
         },
         {
@@ -86,8 +87,8 @@ Update the S3 bucket information to match your setup.
             ],
             "Resource": [
                 "arn:aws:s3:::sagemaker-sample-files/*",
-                "arn:aws:s3:::circleci-sagemaker-pipeline",
-                "arn:aws:s3:::circleci-sagemaker-pipeline/*"
+                "arn:aws:s3:::<S3-BUCKET-FOR-SAGEMAKER-PIPELINE>",
+                "arn:aws:s3:::<S3-BUCKET-FOR-SAGEMAKER-PIPELINE>/*"
             ]
         },
         {
@@ -99,6 +100,7 @@ Update the S3 bucket information to match your setup.
                 "logs:DescribeLogStreams",
                 "sagemaker:ListModelPackageGroups",
                 "sagemaker:CreateModelPackage",
+                "sagemaker:CreateModelPackageGroup",
                 "sagemaker:UpdateModelPackage"
             ],
             "Resource": "*"
