@@ -7,7 +7,7 @@ orbs:
 parameters:
   bucket:
     type: string
-    default: circleci-sagemaker-pipeline
+    default: ryan-circleci-amazon-sagemaker-demo
   model_desc:
     type: string
     default: "Kitten Classifier allowing us to distinguish between giraffes and kittens."
@@ -16,7 +16,7 @@ parameters:
     default: kitten-classifier
   project_id:
     type: string
-    default: "e47ee9b0-446f-44cf-bec8-5407ceb06930"
+    default: "005464ce-5dea-4308-b1c4-376a751d0edd"
   region_name:
     type: string
     default: us-east-1
@@ -132,5 +132,3 @@ jobs:
       - run:
           name: train and register model
           command: python ./kitten_model/train_register.py
-
-
