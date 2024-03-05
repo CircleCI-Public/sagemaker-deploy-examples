@@ -181,7 +181,7 @@ Select your Environment:
 
 Then navigate to your environment settings and click on **Create New Token**.
 
-![Create new token](https://images.ctfassets.net/il1yandlcjgk/4QF3GoDCjIOVgAiUnOe8A5/b88084517074af9f6116723704fe8891/release-create-key.png)
+![Create new token](https://ctf-cci-com.imgix.net/2Q6A6GndGljIExE7HG35uD/4b28bb37ab71cefec5fb183d29ed7dc1/release-create-key.png)
 
 Make sure to save this token for later - we'll pop it into an environment variable.
 
