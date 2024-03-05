@@ -179,7 +179,7 @@ Select your Environment:
 
 ![Release environment](https://images.ctfassets.net/il1yandlcjgk/1DwzNcayuWUfRLTnbq9u2L/2fe393977cc4f0bff8a23c5fddce14dd/release-env.png)
 
-And click on **Create New Token**.
+Then navigate to your environment settings and click on **Create New Token**.
 
 ![Create new token](https://images.ctfassets.net/il1yandlcjgk/4QF3GoDCjIOVgAiUnOe8A5/b88084517074af9f6116723704fe8891/release-create-key.png)
 
