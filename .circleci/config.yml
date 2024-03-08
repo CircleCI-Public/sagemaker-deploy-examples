@@ -71,10 +71,15 @@ workflows:
             - dev:create-model-endpoint-config
           filters: *main-branch-only
 
+      - kitten-model-invoke:
+          requires:
+            - dev:deploy-model-to-endpoint
+          filters: *main-branch-only
+
       - promote-model-to-prod-endpoint:
           type: approval
           requires:
-            - dev:deploy-model-to-endpoint
+            - kitten-model-invoke
           filters: *main-branch-only
 
       - aws-sagemaker/create_endpoint_configuration:
@@ -132,5 +137,19 @@ jobs:
       - run:
           name: train and register model
           command: python ./kitten_model/train_register.py
-
-
+  kitten-model-invoke:
+    docker:
+      - image: python:3.11
+    environment:
+      BUCKET_NAME: << pipeline.parameters.bucket >>
+      REGION_NAME: << pipeline.parameters.region_name >>
+      MODEL_NAME: << pipeline.parameters.model_name >>
+      MODEL_DESC: << pipeline.parameters.model_desc >>
+    steps:
+      - checkout
+      - run:
+          name: install python dependencies
+          command: pip install -r ./kitten_model/requirements.txt --upgrade
+      - run:
+          name: invoke model
+          command: python ./kitten_model/invoke_and_eval.py
